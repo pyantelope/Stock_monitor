@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center text-primary">📦 Inventory Dashboard</h2>
+
+    <!-- Product List -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">Current Products</div>
+        <div class="card-body">
+                <ul class="list-group">
+    {% for product in products %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <strong>{{ product.name }}</strong>
+                <span>
+                    Stock: {{ product.initial_quantity - product.total_sold }}
+                    {% if (product.initial_quantity - product.total_sold) <= product.threshold %}
+                        <span class="badge bg-danger ms-2">Low</span>
+                    {% endif %}
+                </span>
+            </div>
+            <<div class="d-flex justify-content-end mt-2 gap-2">
+                 <a href="/edit_product/{{ product.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                 <form action="/delete_product/{{ product.id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                 </form>
+            </div>
+
+            <form action="/restock/{{ product.id }}" method="POST" class="d-flex mt-2">
+                <input type="number" name="restock_quantity" class="form-control form-control-sm me-2" placeholder="Qty" required>
+                <button type="submit" class="btn btn-sm btn-outline-primary">Restock</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+
+    <!-- Add Product Form -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">Add New Product</div>
+        <div class="card-body">
+            <form method="POST" action="/add_product">
+                <div class="mb-3">
+                    <label>Product Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Initial Quantity</label>
+                    <input type="number" name="quantity" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Threshold</label>
+                    <input type="number" name="threshold" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Add Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Record Sale Form -->
+    <div class="card">
+        <div class="card-header bg-warning text-dark">Record a Sale</div>
+        <div class="card-body">
+            <form method="POST" action="/record_sale">
+                <div class="mb-3">
+                    <label>Select Product</label>
+                    <select name="product_id" class="form-select" required>
+                        {% for product in products %}
+                            <option value="{{ product.id }}">{{ product.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Quantity Sold</label>
+                    <input type="number" name="quantity_sold" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Record Sale</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
