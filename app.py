@@ -61,7 +61,7 @@ def send_low_stock_email(product_name, current_stock):
 
 # setting up whatsapp notification
 TWILIO_ACCOUNT_SID = 'AC4eeb47a822315401f64ea9516eca1dff'
-TWILIO_AUTH_TOKEN = '317aa7ab901f3a18b8ad09e911ec698b'
+TWILIO_AUTH_TOKEN = os.getenv('317aa7ab901f3a18b8ad09e911ec698b')
 TWILIO_WHATSAPP_FROM = 'whatsapp:+14155238886'  
 YOUR_WHATSAPP_TO = 'whatsapp:+2348068004048'
 
@@ -196,7 +196,7 @@ def restock_product(product_id):
         flash(f" '{product.name}' restocked by {added_qty} units.", "success")
     
     return redirect(url_for("home"))
-
+ 
 
 
 # add_product
