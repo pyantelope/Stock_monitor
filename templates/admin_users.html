@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #007BFF; color: white; }
+        .btn { padding: 5px 10px; border: none; cursor: pointer; }
+        .active { background: #28a745; color: white; }
+        .inactive { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <h2>{{ business_name }} — User Management</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Business Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.business_name }}</td>
+                <td>
+                    {% if user.is_active %}
+                        <span style="color:green;">Active</span>
+                    {% else %}
+                        <span style="color:red;">Deactivated</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not user.is_admin %}
+                        <form action="{{ url_for('toggle_user_status', user_id=user.id) }}" method="POST" style="display:inline;">
+                            {% if user.is_active %}
+                                <button class="btn inactive" type="submit">Deactivate</button>
+                            {% else %}
+                                <button class="btn active" type="submit">Activate</button>
+                            {% endif %}
+                        </form>
+                    {% else %}
+                        <em>Admin</em>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+</body>
+</html>

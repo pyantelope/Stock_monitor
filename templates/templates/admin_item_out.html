@@ -1,0 +1,53 @@
+{% extends 'admin_base.html' %}
+{% block title %}Item Out{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Remove Items from Inventory</h2>
+
+    <form method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="product_id" class="form-label">Select Product</label>
+            <select class="form-select" name="product_id" required>
+                {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }} (Qty: {{ product.initial_quantity }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity to Remove</label>
+            <input type="number" class="form-control" name="quantity" required min="1">
+        </div>
+        <div class="mb-3">
+            <label for="reason" class="form-label">Reason</label>
+            <input type="text" class="form-control" name="reason" placeholder="e.g. Damaged, Donation, Testing" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Remove</button>
+    </form>
+
+    <hr>
+    <h4>Recent Item Out Records</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Reason</th>
+                <th>Removed By (User ID)</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in item_out_records %}
+            <tr>
+                <td>{{ record.product_id }}</td>
+                <td>{{ record.quantity_removed }}</td>
+                <td>{{ record.reason }}</td>
+                <td>{{ record.removed_by }}</td>
+                <td>{{ record.removed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

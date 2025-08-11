@@ -1,0 +1,32 @@
+<!-- templates/admin_items.html -->
+{% extends 'admin_base.html' %}
+{% block title %}Manage Items{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Manage Items</h2>
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Initial Qty</th>
+                <th>Threshold</th>
+                <th>Price</th>
+                <th>Date Added</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.initial_quantity }}</td>
+                <td>{{ item.threshold }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

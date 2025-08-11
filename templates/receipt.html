@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sales Receipt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 80mm;
+      margin: auto;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+    .receipt {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    p {
+      margin: 5px 0;
+    }
+    .total {
+      font-weight: bold;
+      margin-top: 10px;
+      border-top: 1px dashed #aaa;
+      padding-top: 10px;
+    }
+    .print-btn {
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    @media print {
+      .print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <h2>Sales Receipt</h2>
+    <p><strong>Date:</strong> {{ sale.sold_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+    <p><strong>Product:</strong> {{ product.name }}</p>
+    <p><strong>Quantity:</strong> {{ sale.quantity_sold }}</p>
+    <p class="total">Thank you for your purchase!</p>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨 Print Receipt</button>
+</body>
+</html>

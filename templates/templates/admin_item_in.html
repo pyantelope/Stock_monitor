@@ -1,0 +1,47 @@
+{% extends 'admin_base.html' %}
+{% block title %}Item In{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Restock Product</h2>
+
+    <form method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="product_id" class="form-label">Select Product</label>
+            <select class="form-select" name="product_id" required>
+                {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }} (Qty: {{ product.initial_quantity }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity to Add</label>
+            <input type="number" class="form-control" name="quantity" required min="1">
+        </div>
+        <button type="submit" class="btn btn-success">Add Stock</button>
+    </form>
+
+    <hr>
+    <h4>Recent Item In Records</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Added By (User ID)</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in item_in_records %}
+            <tr>
+                <td>{{ record.product_id }}</td>
+                <td>{{ record.quantity_added }}</td>
+                <td>{{ record.added_by }}</td>
+                <td>{{ record.added_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

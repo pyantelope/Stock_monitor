@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+  <div class="flex">
+    <!-- Sidebar -->
+    <div class="w-64 bg-white shadow h-screen p-4">
+      <h2 class="text-xl font-bold mb-6">Admin Panel</h2>
+      <nav class="space-y-2">
+        <a href="{{ url_for('admin_dashboard') }}" class="block py-2 px-4 rounded hover:bg-gray-200">Dashboard</a>
+        <a href="{{ url_for('manage_users') }}" class="block py-2 px-4 rounded hover:bg-gray-200">Manage Users</a>
+        <a href="{{ url_for('backup_restore') }}" class="block py-2 px-4 rounded hover:bg-gray-200">Backup & Restore</a>
+        <!-- Add more links here -->
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-8">
+      <h1 class="text-2xl font-bold mb-6">Welcome, Admin</h1>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <!-- Stat Boxes -->
+        <div class="bg-white p-6 rounded shadow text-center">
+          <p class="text-sm text-gray-500">Total Users</p>
+          <p class="text-2xl font-bold">{{ user_count }}</p>
+        </div>
+        <div class="bg-white p-6 rounded shadow text-center">
+          <p class="text-sm text-gray-500">Total Products</p>
+          <p class="text-2xl font-bold">{{ product_count }}</p>
+        </div>
+        <div class="bg-white p-6 rounded shadow text-center">
+          <p class="text-sm text-gray-500">Total Sales</p>
+          <p class="text-2xl font-bold">₦{{ total_sales }}</p>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <a href="{{ url_for('manage_users') }}" class="bg-blue-600 text-white py-4 px-6 rounded-lg text-center font-semibold hover:bg-blue-700">Manage Users</a>
+        <a href="{{ url_for('backup_restore') }}" class="bg-green-600 text-white py-4 px-6 rounded-lg text-center font-semibold hover:bg-green-700">Backup & Restore</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

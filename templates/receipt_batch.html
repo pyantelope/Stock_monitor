@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Home {{ batch_id }}{% endblock %}
+
+{% block content %}
+<style>
+    .receipt {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .receipt h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .details {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+        border-bottom: 1px dashed #ccc;
+        padding-bottom: 5px;
+    }
+
+    .total {
+        font-weight: bold;
+        text-align: right;
+        margin-top: 15px;
+    }
+
+    .footer {
+        margin-top: 30px;
+        text-align: center;
+        font-style: italic;
+        color: #555;
+    }
+
+    .btn-print {
+        margin-top: 20px;
+        padding: 10px;
+        background: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    @media print {
+        .btn-print {
+            display: none;
+        }
+    }
+</style>
+
+<div class="receipt">
+    <h2>{{ business_name or 'SALES RECEIPT' }}</h2>
+    
+    <div class="details">
+        <p><strong>Batch ID:</strong> {{ batch_id }}</p>
+        {% if sales %}
+            <p><strong>Date:</strong> {{ sales[0].timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>Customer:</strong> {{ sales[0].customer_name }}</p>
+        {% endif %}
+    </div>
+    <hr>
+
+    {% if sales %}
+        <ul>
+            {% for sale in sales %}
+                <li>
+                    <strong>{{ sale.product_name }}</strong><br>
+                    Unit: ₦{{ "%.2f"|format(sale.unit_price) }} × {{ sale.quantity }}<br>
+                    Amount: ₦{{ "%.2f"|format(sale.unit_price * sale.quantity) }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="total">
+            TOTAL: ₦{{ "%.2f"|format(total_amount) }}
+        </div>
+    {% else %}
+        <p>No sales found for this batch.</p>
+    {% endif %}
+
+    <div class="footer">
+        <p>THANK YOU FOR YOUR PURCHASE</p>
+        <p>||||||| ||| || ||||||||</p>
+    </div>
+
+    <a class="btn-print" href="{{ url_for('home') }}">⬅ Back Home</a>
+    <button class="btn-print" onclick="window.print()">🖨 Print</button>
+</div>
+{% endblock %}

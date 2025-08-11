@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-card {
+        padding: 30px;
+        text-align: center;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .dashboard-card:hover {
+        transform: scale(1.02);
+    }
+
+    .dashboard-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+        color: #007BFF;
+    }
+
+    .sidebar {
+        width: 200px;
+        background: #343a40;
+        color: white;
+        position: fixed;
+        height: 100%;
+        padding-top: 20px;
+    }
+
+    .sidebar a {
+        display: block;
+        padding: 12px 20px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar a:hover {
+        background: #007bff;
+    }
+
+    .main-content {
+        margin-left: 210px;
+        padding: 20px;
+    }
+</style>
+
+<div class="sidebar">
+    <h5 class="text-center">📊 Admin</h5>
+    <a href="{{ url_for('admin_dashboard') }}">Users</a>
+    <a href="#">Suppliers</a>
+    <a href="#">Items</a>
+    <a href="#">Item In</a>
+    <a href="#">Item Out</a>
+    <a href="#">Backup & Restore</a>
+    <a href="{{ url_for('home') }}">Back to App</a>
+</div>
+
+<div class="main-content">
+    <h3 class="mb-4">Admin Control Panel</h3>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">👥</div>
+                <h5>Users</h5>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-sm btn-primary mt-2">Manage</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">📦</div>
+                <h5>Suppliers</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">🗃️</div>
+                <h5>Items</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">🚚</div>
+                <h5>Item In</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">🛒</div>
+                <h5>Item Out</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="dashboard-icon">🔁</div>
+                <h5>Backup & Restore</h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

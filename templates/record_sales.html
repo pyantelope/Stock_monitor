@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-primary mb-4">🛒 Record Multiple Sales</h2>
+
+<form method="POST" class="card p-4 shadow-sm bg-white">
+
+    <!-- Customer Name -->
+    <div class="mb-3">
+        <label class="form-label">Customer / Business Name</label>
+        <input type="text" class="form-control" value="{{ business_name }}" disabled>
+        <input type="hidden" name="customer_name" value="{{ business_name }}">
+    </div>
+
+    <!-- Product List -->
+    <h5 class="mb-3">Select Products and Quantities</h5>
+    {% for product in products %}
+        <div class="row mb-3 border-bottom pb-2">
+            <div class="col-md-6">
+                <label class="form-label">{{ product.name }}</label>
+                <small class="d-block text-muted">₦{{ "%.2f"|format(product.price) }} per unit</small>
+            </div>
+            <div class="col-md-6">
+                <label for="quantity_{{ product.id }}" class="form-label">Quantity</label>
+                <input type="number" name="quantity_{{ product.id }}" id="quantity_{{ product.id }}"
+                       class="form-control" min="0" placeholder="Enter quantity (0 to skip)">
+            </div>
+        </div>
+    {% endfor %}
+
+    <!-- Submit Button -->
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">⬅ Back</a>
+        <button type="submit" class="btn btn-primary">💾 Record Sales</button>
+    </div>
+</form>
+{% endblock %}

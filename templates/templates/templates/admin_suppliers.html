@@ -1,0 +1,39 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manage Suppliers{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Manage Suppliers</h2>
+
+    <form method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="name" class="form-label">Supplier Name</label>
+            <input type="text" class="form-control" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="contact_info" class="form-label">Contact Info</label>
+            <input type="text" class="form-control" name="contact_info">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Supplier</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Contact Info</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for supplier in suppliers %}
+            <tr>
+                <td>{{ supplier.name }}</td>
+                <td>{{ supplier.contact_info }}</td>
+                <td>{{ supplier.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

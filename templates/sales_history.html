@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Home{{ business_name }}{% endblock %}
+
+{% block content %}
+<style>
+    @media print {
+        .no-print {
+            display: none;
+        }
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+        <h3 class="text-primary"> Sales History</h3>
+        <button class="btn btn-secondary" onclick="window.print()">🖨 Print Page</button>
+    </div>
+
+    <form method="GET" class="row g-3 mb-4 no-print">
+        <div class="col-md-4">
+            <input type="text" name="customer" class="form-control" placeholder="Search by customer" value="{{ request.args.get('customer', '') }}">
+        </div>
+        <div class="col-md-4">
+            <input type="date" name="date" class="form-control" value="{{ request.args.get('date', '') }}">
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">🔍 Filter</button>
+        </div>
+    </form>
+
+    {% if batches %}
+        <table class="table table-bordered table-striped bg-white shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Batch ID</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th class="text-center">Receipt</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in batches %}
+                <tr>
+                    <td>{{ batch.batch_id }}</td>
+                    <td>{{ batch.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ batch.customer_name or 'N/A' }}</td>
+                    <td class="text-center">
+                        <a href="{{ url_for('receipt_batch', batch_id=batch.batch_id) }}" class="btn btn-sm btn-success">🧾 View Receipt</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">No sales found.</div>
+    {% endif %}
+</div>
+{% endblock %}
