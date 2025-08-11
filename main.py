@@ -569,5 +569,45 @@ def debug():
 with app.app_context():
     db.create_all()
 
+@app.route("/")
+@login_required
+def home():
+    if current_user.is_admin:
+        products = Product.query.order_by(Product.created_at.desc()).all()
+    else:
+        products = (
+            Product.query.filter_by(user_id=current_user.id)
+            .order_by(Product.created_at.desc())
+            .all()
+        )
+
+    product_rows = []
+    for product in products:
+        total_sold = (
+            db.session.query(db.func.sum(Sale.quantity_sold))
+            .filter_by(product_id=product.id)
+            .scalar()
+            or 0
+        )
+        current_stock = product.initial_quantity - total_sold
+        product_rows.append(
+            {
+                "id": product.id,
+                "name": product.name,
+                "initial_quantity": product.initial_quantity,
+                "total_sold": total_sold,
+                "current_stock": current_stock,
+                "threshold": product.threshold,
+                "low_stock": current_stock <= product.threshold,
+                "created_at": product.created_at,
+            }
+        )
+
+    return render_template(
+        "home.html",
+        products=product_rows,
+        business_name=current_user.business_name,
+    )
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)

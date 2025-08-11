@@ -1,6 +1,6 @@
 from main import app, db, User
 
-with main.app_context():
+with app.app_context():
     if not User.query.filter_by(email="admin@example.com").first():
         admin = User(
             username="admin",
